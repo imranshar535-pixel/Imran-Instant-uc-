@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEXUS UC | Tactical Top-Up Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-core: #070913;
+  --bg-panel: rgba(17, 24, 39, 0.7);
+  --border-gold: #f3ba2f;
+  --glow-gold: rgba(243, 186, 47, 0.25);
+  --accent-green: #10b981;
+  --accent-red: #ef4444;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background: var(--bg-core);
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(243,186,47,0.08) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(16,185,129,0.05) 0%, transparent 40%),
+    linear-gradient(rgba(7,9,19,0.9), rgba(7,9,19,0.9)),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23f3ba2f' fill-opacity='0.02' fill-rule='evenodd'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4H6zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Futuristic Header */
+header{
+  text-align:center;
+  padding:45px 20px 30px;
+  background: linear-gradient(180deg, rgba(21,27,43,0.9) 0%, rgba(7,9,19,0.5) 100%);
+  border-bottom: 2px solid rgba(243,186,47,0.3);
+  position: relative;
+  backdrop-filter: blur(10px);
+}
+header::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 2px;
+  background: var(--border-gold);
+  box-shadow: 0 0 10px var(--border-gold);
+}
+.badge-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16,185,129,0.1);
+  border: 1px solid rgba(16,185,129,0.3);
+  color: #34d399;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 15px;
+}
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  background: #34d399;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #34d399;
+  animation: pulse 1.5s infinite;
+}
+header h1{
+  font-family: 'Rajdhani', sans-serif;
+  color: var(--border-gold);
+  font-size: 38px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-shadow: 0 0 20px rgba(243,186,47,0.3);
+}
+header p{
+  color: var(--text-muted);
+  margin-top: 6px;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.container{max-width:850px;margin:auto;padding:30px 20px}
+h2{
+  font-family: 'Rajdhani', sans-serif;
+  color: var(--border-gold);
+  margin: 35px 0 15px;
+  font-size: 22px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+h2::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 18px;
+  background: var(--border-gold);
+  box-shadow: 0 0 8px var(--border-gold);
+}
+
+/* Packages Grid with Glassmorphism */
+.packages{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.package{
+  background: linear-gradient(145deg, rgba(23,31,51,0.8), rgba(15,21,35,0.9));
+  border: 1px solid rgba(42,55,84,0.8);
+  border-radius: 14px;
+  padding: 24px 15px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(5px);
+}
+.package:hover{
+  border-color: var(--border-gold);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5), 0 0 15px var(--glow-gold);
+}
+.package.active{
+  border-color: var(--border-gold);
+  background: linear-gradient(145deg, rgba(31,41,66,0.95), rgba(19,27,46,0.95));
+  box-shadow: 0 0 20px var(--glow-gold);
+}
+.package.active::after {
+  content: '✓';
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: var(--border-gold);
+  color: #000;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tag{display:inline-block;background:linear-gradient(90deg,#f3ba2f,#d99b00);color:#070913;padding:4px 12px;border-radius:6px;font-size:10px;font-weight:700;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px}
+.tag-limited{background:linear-gradient(90deg,#ef4444,#dc2626);color:#fff;}
+.package h3{font-family:'Rajdhani',sans-serif;font-size:26px;color:#fff;font-weight:700;letter-spacing:1px}
+.bonus{color:#34d399;margin-top:6px;font-size:12px;font-weight:600}
+.price{font-family:'Rajdhani',sans-serif;color:var(--border-gold);font-size:28px;font-weight:700;margin-top:12px;letter-spacing:1px}
+.old{color:var(--text-muted);text-decoration:line-through;font-size:12px;margin-top:4px}
+
+/* Futuristic Form Box */
+form{
+  background: var(--bg-panel);
+  border: 1px solid rgba(31,41,61,0.8);
+  border-radius: 16px;
+  padding: 30px;
+  margin-top: 35px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+  backdrop-filter: blur(10px);
+}
+.input-group { position: relative; margin: 12px 0; }
+input{
+  width:100%;
+  padding:15px 16px;
+  border:1.5px solid rgba(42,55,84,0.8);
+  border-radius:10px;
+  background:rgba(7,9,19,0.6);
+  color:white;
+  font-size:14px;
+  transition:0.3s;
+}
+input:focus{
+  border-color:var(--border-gold);
+  outline:none;
+  box-shadow:0 0 12px var(--glow-gold);
+  background:rgba(7,9,19,0.9);
+}
+
+/* Payment Info Card */
+.payment-box{
+  background:linear-gradient(145deg, rgba(23,31,51,0.6), rgba(15,21,35,0.8));
+  border:1.5px dashed rgba(243,186,47,0.5);
+  padding:20px;
+  border-radius:12px;
+  margin:18px 0;
+  text-align:center;
+  position: relative;
+}
+.payment-box p{color:var(--border-gold);font-size:15px;font-weight:600;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px}
+.payment-box span{color:#e2e8f0;font-size:15px;line-height:1.6;font-family:monospace;letter-spacing:0.5px}
+
+.instruction-note{
+  background:rgba(239, 68, 68, 0.08);
+  border:1px solid rgba(239, 68, 68, 0.3);
+  color:#fca5a5;
+  padding:14px;
+  border-radius:10px;
+  margin:18px 0;
+  text-align:center;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.total-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(7,9,19,0.5);
+  border: 1px solid rgba(243,186,47,0.3);
+  padding: 18px 22px;
+  border-radius: 12px;
+  margin: 25px 0;
+}
+.total-label { font-family: 'Rajdhani', sans-serif; font-size: 18px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+.total{color:var(--border-gold);font-family:'Rajdhani',sans-serif;font-size:32px;font-weight:700;text-shadow:0 0 15px var(--glow-gold)}
+
+/* Tactical Action Button */
+button.btn-primary{
+  width:100%;
+  background:linear-gradient(90deg,#10b981,#059669);
+  color:white;
+  border:0;
+  border-radius:10px;
+  padding:18px;
+  font-size:16px;
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700;
+  cursor:pointer;
+  text-transform:uppercase;
+  letter-spacing:2px;
+  transition:0.3s;
+  box-shadow:0 6px 20px rgba(16,185,129,0.3);
+}
+button.btn-primary:hover{
+  background:linear-gradient(90deg,#059669,#047857);
+  box-shadow:0 8px 25px rgba(16,185,129,0.5);
+  transform:translateY(-2px);
+}
+
+/* POPUP MODAL STYLING */
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(5,7,14,0.85);z-index:1000;justify-content:center;align-items:center;padding:20px;backdrop-filter:blur(8px)}
+.modal-content{background:#111827;border:2px solid var(--border-gold);border-radius:18px;max-width:440px;width:100%;padding:30px;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,0.8);animation:scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)}
+.modal-content h3{font-family:'Rajdhani',sans-serif;color:var(--border-gold);font-size:24px;margin-bottom:15px;text-transform:uppercase;letter-spacing:1.5px}
+.modal-content p{color:var(--text-muted);font-size:14px;margin:10px 0;line-height:1.6}
+.modal-highlight{background:rgba(7,9,19,0.8);border:1.5px dashed var(--border-gold);padding:15px;border-radius:10px;margin:18px 0;color:#fff;font-family:monospace;font-size:15px}
+.modal-btn-group{display:flex;gap:12px;margin-top:25px}
+.modal-btn{flex:1;padding:14px;border:none;border-radius:10px;font-size:14px;font-family:'Rajdhani',sans-serif;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:1px;transition:0.2s}
+.btn-confirm{background:#10b981;color:#fff}
+.btn-confirm:hover{background:#059669}
+.btn-cancel{background:#ef4444;color:#fff}
+.btn-cancel:hover{background:#dc2626}
+
+@keyframes scaleUp{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes pulse{0%{opacity:1}50%{opacity:0.4}100%{opacity:1}}
+
+footer{text-align:center;padding:40px;color:var(--text-muted);font-size:12px;letter-spacing:1px}
+
+@media(max-width:480px){
+.packages{grid-template-columns:1fr}
+header h1{font-size:28px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge-live"><div class="pulse-dot"></div> Secure Gateway Active</div>
+  <h1>⚡ NEXUS UC STORE ⚡</h1>
+  <p>Official Tactical PUBG Mobile Top-Up Center</p>
+</header>
+
+<div class="container">
+  <h2>Select UC Package</h2>
+  <div class="packages" id="packages"></div>
+
+  <form id="orderForm">
+    <h2>Player Identification</h2>
+    <div class="input-group">
+      <input id="playerID" placeholder="PUBG Player ID (e.g. 5123456789)" required>
+    </div>
+    <div class="input-group">
+      <input id="playerName" placeholder="Player Name (Optional)">
+    </div>
+
+    <h2>Contact Information</h2>
+    <div class="input-group">
+      <input id="phone" type="tel" placeholder="WhatsApp Number (e.g. 03042255385)" required>
+    </div>
+
+    <h2>Payment Channel</h2>
+    <div class="payment-box">
+      <p>EasyPaisa Merchant Info</p>
+      <span>Account Number: <strong>0304-2255385</strong><br>Account Name: <strong>Muhammed Imran</strong></span>
+    </div>
+
+    <div class="instruction-note">
+      📌 <strong>Protocol Notice:</strong> Send your payment Screenshot (SS) directly via WhatsApp immediately after transfer to lock in priority processing!
+    </div>
+
+    <div class="total-container">
+      <span class="total-label">Final Amount</span>
+      <div class="total">Rs. <span id="total">0</span></div>
+    </div>
+    
+    <button type="submit" class="btn-primary">Initialize Order & WhatsApp 🚀</button>
+  </form>
+</div>
+
+<!-- PAYMENT CONFIRMATION POPUP MODAL -->
+<div class="modal-overlay" id="paymentModal">
+  <div class="modal-content">
+    <h3>⚠️ Transfer Verification</h3>
+    <p>Please complete your bank transfer or EasyPaisa transaction to:</p>
+    <div class="modal-highlight">
+      EasyPaisa: 0304-2255385<br>Muhammed Imran
+    </div>
+    <p>Have you completed the payment transfer?</p>
+    <div class="modal-btn-group">
+      <button class="modal-btn btn-cancel" onclick="closeModal()">Back</button>
+      <button class="modal-btn btn-confirm" onclick="proceedToWhatsApp()">Yes, Open WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+<footer>© 2026 NEXUS STORE • ALL RIGHTS RESERVED</footer>
+
+<script>
+const whatsappNumber = "923042255385";
+
+// Ab 300 + 25 UC par "HOT DEAL" hai aur baaki specified par "ONLY 1 TIME OFFER"
+const products = [
+  { name: "60 UC", price: 288, reference: 330, tag: "HOT DEAL" },
+  { name: "60 + 60 UC", price: 400, reference: 550, bonus: 60, tag: "ONLY 1 TIME OFFER" },
+  { name: "300 + 25 UC", price: 1450, reference: 1600, bonus: 25, tag: "HOT DEAL" },
+  { name: "300 + 175 UC", price: 1650, reference: 1850, bonus: 175, tag: "ONLY 1 TIME OFFER" }
+];
+
+let selected = null;
+const area = document.getElementById("packages");
+
+products.forEach((item) => {
+  const card = document.createElement("div");
+  card.className = "package";
+
+  const tagClass = item.tag === "ONLY 1 TIME OFFER" ? "tag tag-limited" : "tag";
+
+  card.innerHTML = `
+    <div class="${tagClass}">${item.tag}</div>
+    <h3>${item.name}</h3>
+    ${item.bonus ? `<div class="bonus">🎁 BONUS +${item.bonus} UC</div>` : ""}
+    <div class="price">Rs. ${item.price.toLocaleString("en-PK")}</div>
+    <div class="old">Ref: Rs. ${item.reference.toLocaleString("en-PK")}</div>
+  `;
+
+  card.onclick = () => {
+    document.querySelectorAll(".package").forEach(x => x.classList.remove("active"));
+    card.classList.add("active");
+    selected = item;
+    document.getElementById("total").innerText = item.price.toLocaleString("en-PK");
+  };
+
+  area.appendChild(card);
+});
+
+document.getElementById("orderForm").addEventListener("submit", e => {
+  e.preventDefault();
+
+  if (!selected) {
+    alert("⚠️ Please select a UC package first!");
+    return;
+  }
+
+  const id = document.getElementById("playerID").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+
+  if (!/^\d{5,15}$/.test(id)) {
+    alert("⚠️ Please enter a valid PUBG Player ID!");
+    return;
+  }
+
+  if (!/^0?3\d{9}$/.test(phone) && !/^923\d{9}$/.test(phone)) {
+    alert("⚠️ Please enter a valid WhatsApp number (e.g. 03042255385)");
+    return;
+  }
+
+  document.getElementById("paymentModal").style.display = "flex";
+});
+
+function closeModal() {
+  document.getElementById("paymentModal").style.display = "none";
+}
+
+function proceedToWhatsApp() {
+  const id = document.getElementById("playerID").value.trim();
+  const name = document.getElementById("playerName").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const price = selected.price;
+
+  const message = "✨ *NEXUS UC STORE ORDER* ✨\n\n" +
+                  "📦 *Package:* " + selected.name + (selected.bonus ? " (+" + selected.bonus + " UC)" : "") + "\n" +
+                  "🆔 *Player ID:* " + id + "\n" +
+                  (name ? "👤 *Name:* " + name + "\n" : "") +
+                  "📱 *WhatsApp Number:* " + phone + "\n\n" +
+                  "💳 *Payment Method:* EasyPaisa\n" +
+                  "💸 *Paid Account Number:* " + phone + "\n" +
+                  "💰 *Paid Amount:* Rs. " + price + "\n\n" +
+                  "Kindly confirm my order! 🚀";
+
+  const whatsappURL = "https://api.whatsapp.com/send?phone=" + whatsappNumber + "&text=" + encodeURIComponent(message);
+  
+  closeModal();
+  window.open(whatsappURL, "_blank");
+}
+</script>
+</body>
+</html>
+
+
